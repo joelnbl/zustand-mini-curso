@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware';
 
 interface Bear {
     id: number;
@@ -12,20 +13,23 @@ interface BearState {
     pandaBears: number;
     bears: Bear[];
 
-    computed: {
-        totalBears: number;
-    },
+    totalBears: () => number;
 
     increaseBlackBears: (by: number) => void;
     increasePolarBears: (by: number) => void;
     increasePandaBears: (by: number) => void;
 
     doNothing: () => void;
-    addBear: (bear: Bear) => void;
+    addBear: () => void;
     clearBears: () => void;
 }
 
-export const useBearStore = create<BearState>()((set, get) => ({
+
+export const useBearStore = create<BearState>()(
+    
+
+    persist(
+    (set, get) => ({
     blackBears: 10,
     polarBears: 5,
     pandaBears: 1,
@@ -34,10 +38,8 @@ export const useBearStore = create<BearState>()((set, get) => ({
         name: 'Oso #1'
     }],
 
-    computed: {
-        get totalBears(): number {
+         totalBears: () =>  {
             return get().blackBears + get().polarBears + get().pandaBears + get().bears.length;
-        },
     },
 
     increaseBlackBears: (by: number) => set(state => ({
@@ -63,11 +65,10 @@ export const useBearStore = create<BearState>()((set, get) => ({
 
     clearBears: () => set({ bears: [] })
 
-}))
+}) , {
+    name: "bear-storage"
+})
 
 
 
-//   bears: 0,
-
-//   increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-//   removeAllBears: () => set({ bears: 0 }),
+)

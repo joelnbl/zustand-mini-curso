@@ -12,7 +12,6 @@ export const BearPage = () => {
         <BlackBears />
         <PolarBears />
         <PandaBears />
-
         <BearsDisplay />
       </div>
     </>
